@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+        }
+        .options button:hover {
+            background-color: #2980b9;
+        }
+        .score {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Interactive Quiz</h2>
+        <div id="quiz">
+            <div id="question" class="question"></div>
+            <div id="options" class="options"></div>
+            <div class="score">Score: <span id="score">0</span></div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "What is the capital of France?", options: ["Berlin", "Madrid", "Paris"], answer: 2 },
+            { q: "Which language is used for web development?", options: ["Python", "JavaScript", "C++"], answer: 1 },
+            { q: "What is 2 + 2?", options: ["3", "4", "5"], answer: 1 },
+            { q: "Which planet is known as the Red Planet?", options: ["Earth", "Mars", "Venus"], answer: 1 },
+            { q: "Who wrote 'Hamlet'?", options: ["Shakespeare", "Hemingway", "Tolkien"], answer: 0 },
+            { q: "What is the boiling point of water?", options: ["90°C", "100°C", "110°C"], answer: 1 },
+            { q: "What is the largest ocean?", options: ["Atlantic", "Pacific", "Indian"], answer: 1 },
+            { q: "Which country is famous for the Eiffel Tower?", options: ["Italy", "France", "Germany"], answer: 1 },
+            { q: "What is the currency of Japan?", options: ["Yuan", "Yen", "Won"], answer: 1 },
+            { q: "What is the chemical symbol for Gold?", options: ["Ag", "Au", "Pb"], answer: 1 },
+            { q: "Which is the longest river?", options: ["Nile", "Amazon", "Yangtze"], answer: 0 },
+            { q: "Which gas do plants use in photosynthesis?", options: ["Oxygen", "Carbon Dioxide", "Hydrogen"], answer: 1 },
+            { q: "What is 10 / 2?", options: ["4", "5", "6"], answer: 1 },
+            { q: "Who painted the Mona Lisa?", options: ["Van Gogh", "Da Vinci", "Picasso"], answer: 1 },
+            { q: "Which continent has the most countries?", options: ["Asia", "Africa", "Europe"], answer: 1 },
+            { q: "What is the hardest natural substance?", options: ["Gold", "Diamond", "Iron"], answer: 1 },
+            { q: "Which organ pumps blood?", options: ["Liver", "Heart", "Brain"], answer: 1 },
+            { q: "How many continents are there?", options: ["5", "6", "7"], answer: 2 },
+            { q: "Which is the tallest mountain?", options: ["K2", "Everest", "Kilimanjaro"], answer: 1 }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const quiz = document.getElementById("quiz");
+            quiz.innerHTML = `<div id="question" class="question"></div>
+                              <div id="options" class="options"></div>
+                              <div class="score">Score: <span id="score">${score}</span></div>`;
+            
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            questionElement.textContent = questions[currentQuestionIndex].q;
+            optionsElement.innerHTML = "";
+            questions[currentQuestionIndex].options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => checkAnswer(index);
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedIndex) {
+            if (selectedIndex === questions[currentQuestionIndex].answer) {
+                score++;
+                document.getElementById("score").textContent = score;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("quiz").innerHTML = `<h3>Quiz Completed!</h3><p>Your final score is ${score}/${questions.length}</p><button onclick="retryQuiz()">Retry</button>`;
+            }
+        }
+
+        function retryQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
